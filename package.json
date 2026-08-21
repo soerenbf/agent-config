@@ -1,0 +1,19 @@
+{
+  "name": "agent-config",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test extensions/openspec-subagent/test/*.test.mjs"
+  },
+  "keywords": ["pi-package"],
+  "peerDependencies": {
+    "@earendil-works/pi-agent-core": "*",
+    "@earendil-works/pi-ai": "*",
+    "@earendil-works/pi-coding-agent": "*",
+    "typebox": "*"
+  },
+  "pi": {
+    "extensions": ["./extensions"],
+    "skills": ["./skills"]
+  }
+}
