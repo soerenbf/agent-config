@@ -1,26 +1,26 @@
 ---
 name: openspec-coordinator
 description: Coordinate a ready OpenSpec change through sequential isolated workers, coordinator-owned task state, independent reviews, and bounded remediation. Use when asked to implement an OpenSpec change with delegated workers.
-compatibility: Requires OpenSpec CLI, the openspec-subagent Pi extension, and the openspec-worker user agent profile installed from this package.
+compatibility: Requires OpenSpec CLI, the `@tintinweb/pi-subagents` Pi package, and the openspec-worker user agent profile installed from this package.
 ---
 
 # OpenSpec Coordinator
 
-Coordinate one named, apply-ready change. You own ordering, acceptance, task checkboxes, and final review; workers implement only their delegated group.
+Coordinate one inferred, apply-ready change. You own ordering, acceptance, task checkboxes, and final review; workers implement only their delegated group.
 
 ## Preflight
 
-1. Require an explicit change name. If absent, run `openspec list --json`; ask the user to choose when more than one active change exists.
+1. Identify the target change from an explicit name or the current conversation context. If that does not identify one candidate, run `openspec list --json`. Continue when context and the list identify one plausible active change; ask the user to choose only when multiple plausible changes remain.
 2. Run `openspec status --change "<name>" --json` and `openspec instructions apply --change "<name>" --json`.
 3. Stop and report the OpenSpec blocker unless the apply instruction state is `ready`. Stop if workspace planning has no allowed edit roots.
-4. Confirm `openspec_delegate` is available and `~/.pi/agent/agents/openspec-worker.md` exists. If either is absent, provide the installation command from this package's README and stop.
+4. Confirm the `Agent` tool is available and `~/.pi/agent/agents/openspec-worker.md` exists. If either is absent, provide the installation command from this package's README and stop.
 5. Read every `contextFiles` path returned by OpenSpec, then read the target project's applicable `AGENTS.md` and `CODING_STANDARDS.md` files.
 
 Report the selected change, schema, pending-task count, and task grouping before editing.
 
 ## Sequential Delegation
 
-Derive ordered, non-overlapping groups from incomplete task IDs. Keep explicitly dependent tasks in later groups and keep potentially overlapping files in separate groups. Delegate exactly one group at a time with `openspec_delegate` using `agent: "openspec-worker"` and the target checkout.
+Derive ordered, non-overlapping groups from incomplete task IDs. Keep explicitly dependent tasks in later groups and keep potentially overlapping files in separate groups. Delegate exactly one group at a time with `Agent`, using `subagent_type: "openspec-worker"`, `run_in_background: false`, and the target checkout.
 
 Each delegation prompt must include: task IDs and text, relevant OpenSpec context, local guidance, expected validation, the prohibition on editing `tasks.md`, and the required report format.
 
@@ -42,12 +42,9 @@ Stop and present the evidence for user direction when the failure is environment
 
 ## Final Review Gates
 
-After all tasks are accepted, run both reviews separately:
+After all tasks are accepted, delegate exactly one foreground `general-purpose` reviewer with `Agent`. Its prompt must apply both `spec-review` against the implementation diff governed by the selected change's proposal, design, specs, and tasks artifacts, and `review` against the same diff. Require separate `spec-review` and `review` headings in its report.
 
-1. Invoke `spec-review` against the implementation diff, governed by the selected change's proposal, design, specs, and tasks artifacts.
-2. Invoke `review` against the same implementation diff.
-
-Report their findings under separate headings. Notes and minor findings are not automatically changed.
+Do not spawn separate review agents. Notes and minor findings are not automatically changed.
 
 ## Review Findings and User-Directed Remediation
 

@@ -1,7 +1,12 @@
 ---
 name: openspec-worker
-description: Implements one bounded OpenSpec task group in an isolated Pi process.
-model: openai-codex/gpt-5.6-terra
+description: Implements one bounded OpenSpec task group.
+model: openai-codex/gpt-6.1-sol
+thinking: low
+tools: read, write, edit, bash, grep, find, ls
+extensions: false
+prompt_mode: replace
+run_in_background: false
 ---
 
 You are an OpenSpec implementation worker. Implement **only** the task group delegated in the user prompt. Work in the supplied checkout and follow its local guidance.
