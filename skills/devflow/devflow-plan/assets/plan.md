@@ -2,40 +2,39 @@
 
 See [proposal.md](proposal.md), [requirements.md](requirements.md), and [design.md](design.md) for the agreed intent, behavior, and approach.
 
-## Delivery Approach
+## Task Groups
 
-<!-- Overall sequencing and consequential delivery constraints. Default to one PR.
-     Explain stacking or other dependencies when multiple PRs are useful.
-     Replace all drafting guidance and omit irrelevant optional sections. -->
+<!-- Ordered implementation units. Each group is one coherent commit-sized worker assignment.
+     Keep each group independently verifiable where practical. Tasks in a group may share
+     one commit; never combine multiple groups into one commit. -->
 
-## PR 1: <Coherent outcome>
+### 1. <Commit-sized outcome>
 
-<!-- Purpose, dependencies, and merge conditions where non-obvious.
-     Account for intermediate compatibility/deployment states when relevant.
-     Repeat this PR section only when another increment is justified. -->
-
-### Commit Progression
-
-<!-- Optional: meaningful chunks and why their order helps tell the change's story.
-     A proposed progression, not fixed commit boundaries or another checklist.
-     Omit when the sequence adds no value. -->
-
-### Tasks
-
-<!-- Concise, observable work with supporting tests and checks alongside it.
-     Include concrete commands, prerequisites, and expected outcomes where useful.
-     Number tasks by PR (1.1, 1.2; then 2.1, 2.2). -->
-
-- [ ] 1.1 <Concrete change and its observable completion criterion>
+- [ ] 1.1 <Concrete change and observable completion criterion>
 - [ ] 1.2 <Supporting test or verification>
+
+### 2. <Commit-sized outcome>
+
+- [ ] 2.1 <Concrete change and observable completion criterion>
+- [ ] 2.2 <Supporting test or verification>
+
+## PRs
+
+<!-- Each PR contains one or more complete task groups. Default to one PR.
+     Name each coherent review outcome; state dependencies, merge conditions, and
+     intermediate compatibility/deployment constraints where relevant. -->
+
+### PR 1: <Coherent outcome>
+
+Includes task groups: 1–2.
 
 ## Final Verification
 
-<!-- Integrated checks and review against requirements, not repetitions of each PR's checks.
-     Use the next unused task-number prefix after the PR increments. -->
+<!-- Integrated checks and review against requirements, not repetitions of group checks.
+     Number tasks under a final task group if useful; omit when PR checks fully cover it. -->
 
-- [ ] 2.1 <Integrated verification and expected outcome>
-- [ ] 2.2 Review the integrated change against the agreed requirements and design.
+- [ ] 3.1 <Integrated verification and expected outcome>
+- [ ] 3.2 Review the integrated change against the agreed requirements and design.
 
 ## Open Questions
 

@@ -1,11 +1,11 @@
 ---
 name: devflow-implement
-description: Implement an approved Devflow change through sequential PR-sized workers, stacked local branches, independent reviews, and bounded automatic corrections. Use to implement or resume a Devflow plan without pushing or opening PRs.
+description: Implement an approved Devflow change by delegating ordered task groups to sequential workers, with orchestrator-owned Git, PR-boundary reviews, and bounded automatic corrections. Use to implement or resume a Devflow plan without pushing or opening PRs.
 ---
 
 # Devflow Implement
 
-Coordinate the whole approved plan until verified or blocked. Workers implement and commit; you own branches, acceptance, local task state, reviews, and escalation. Local acceptance is not teammate approval or permission to publish.
+Coordinate the whole approved plan until verified or blocked. Delegate one task group at a time; workers implement and return uncommitted changes. You own all Git operations, including branches and commits, plus acceptance, local task state, PR-boundary reviews, and escalation. Local acceptance is not teammate approval or permission to publish.
 
 ## Authorization and Preflight
 
@@ -23,41 +23,39 @@ Before editing, report the selected change, original base commit, planned branch
 
 Devflow artifacts stay local and untracked by default. Resolve the repository's local exclude file with `git rev-parse --git-path info/exclude`; preserve its existing contents and add a root-anchored `/devflow/` rule if needed. Do not change shared `.gitignore`. If artifacts are already tracked, report that and ask before changing their tracking. Never force-add artifacts. The coordinator alone updates `plan.md` task checkboxes; workers must not edit change artifacts. Keep necessary resume notes concise and local in the same change directory, not in a new mandatory progress ledger.
 
-For multiple planned PR increments, create `feature/<feature-name>` at the agreed original base, then build this stack:
+The orchestrator alone creates and manages planned PR branches. For multiple PRs, create `feature/<feature-name>` at the agreed original base, then build this stack:
 
 ```text
 original base
   feature/<feature-name>       integration target; do not advance during execution
-    <feature-name>/<increment-1>   intended PR base: feature/<feature-name>
-      <feature-name>/<increment-2> intended PR base: <feature-name>/<increment-1>
+    <feature-name>/pr-1   intended PR base: feature/<feature-name>
+      <feature-name>/pr-2 intended PR base: <feature-name>/pr-1
         ...
 ```
 
-Create each increment branch from the accepted previous increment tip. For one PR, create only its implementation branch from the agreed base. Choose descriptive names from the plan; never reset or repurpose a colliding existing branch without agreement. Record original base, branch names, parent relationships, and accepted tips locally so resume and later repairs have exact boundaries. Do not create remote PRs or merge increment branches into the feature branch.
+Create each PR branch from the accepted previous PR tip. For one PR, create only its implementation branch from the agreed base. Choose descriptive names from the plan; never reset or repurpose a colliding existing branch without agreement. Record original base, branch names, parent relationships, and accepted tips locally so resume and later repairs have exact boundaries. Do not create remote PRs or merge PR branches into the feature branch.
 
 Implementation invocation permits rebasing branches created for this execution, including on resume when ownership is established. It does not permit rewriting pre-existing user history. If branches have been published or ownership/publication status is uncertain, ask before rewriting; never infer force-push permission.
 
-## Increment Implementation Loop
+## Task Group Implementation Loop
 
-Process PR increments sequentially. Default to one general-purpose implementation worker per increment; split only when the assignment is too large for one bounded worker, preserving the same increment boundary. Delegate with `Agent`, `subagent_type: "general-purpose"`, in the target checkout. Wait for the worker to finish before another writer or branch operation; do not use an isolated worktree that automatically changes the agreed commit/branch structure.
+Process PRs in dependency order and task groups in their planned order. Delegate exactly one complete task group per worker, using `Agent`, `subagent_type: "general-purpose"`, in the target checkout. One worker writes at a time; wait for its return and acceptance before dispatching the next. Workers return uncommitted changes. The orchestrator alone performs Git operations: inspect, verify, stage specific owned files, create one coherent commit per group, and switch/create branches. Never combine groups into one commit. Do not use isolated worktrees that alter the agreed branch/commit structure.
 
 Give each worker a self-contained brief containing:
 
-- The change documents' relevant commitments, exact increment, task IDs/text, dependencies, non-goals, and acceptance criteria.
+- The change documents' relevant commitments, exact task group and task IDs/text, dependencies, non-goals, and acceptance criteria.
 - Assigned checkout and branch, expected starting HEAD, bounded writable paths, protected work, and applicable project guidance.
-- Explicit permission to create coherent implementation/test commits on that branch only. Stage specific owned files and inspect the staged diff; no blanket staging, branch operations, history rewriting, artifact edits, remote mutations, or scope expansion.
+- Explicit instruction to leave changes uncommitted and not perform Git operations, edit change artifacts, mutate remote state, or expand scope.
 - Required checks, prerequisites, expected outcomes, and regression proof where practical. Stop on contradictory requirements, missing prerequisites, or consequential ambiguity.
-- Required report: task IDs addressed, changed files, commit IDs, actual commands and passed/failed/skipped/blocked/not-run results, tests actually executed, deviations, and blockers. Corrections must state defect, remedy, and verification.
+- Required report: task IDs addressed, changed files, actual commands and passed/failed/skipped/blocked/not-run results, tests executed, deviations, and blockers. Corrections state defect, remedy, and verification.
 
-After the worker returns, inspect actual commits, files, diffs, branch identity, and working-tree state against the assignment and protected baseline. Reject unsupported completion claims, unexpected changes, missing commits, or failed/missing required checks. Run applicable checks yourself; zero relevant tests or skipped prerequisites do not establish success. Never discard unexpected work to restore the expected state.
+After each worker returns, inspect its summary, changed files, diff, and working-tree state against the assignment and protected baseline. Verify reported checks; run applicable checks yourself. Reject unsupported completion claims, unexpected changes, or failed/missing required checks. Only after verifying the group's completion, create its commit and mark its satisfied tasks complete in local `plan.md`. Leave blocked or unverified tasks unchecked with a short reason. Never discard unexpected work to restore the expected state.
 
-Obtain an independent general-purpose reviewer for the increment using `devflow-review`. Provide its actual guidance, all four change documents, the increment's heading/outcome, exact parent/start and head commits, relevant check evidence, and explicit exclusions. Include intended uncommitted/untracked implementation if any remains; do not hide it behind a commit-only diff. Require behavioral, design/delivery, and implementation-quality assessment. The reviewer must not implement, commit, edit artifacts, or publish anything. Inspect the findings rather than accepting the report uncritically.
-
-Apply the correction policy below, rerun affected checks, and re-review corrections until the increment is supported or blocked. Only then mark its satisfied tasks complete in local `plan.md` and record the accepted tip. Leave blocked or unverified tasks unchecked with a short reason. Continue automatically to the next increment; report completed/total tasks and a concise correction summary at each handoff.
+After all groups assigned to a PR are committed, obtain one independent general-purpose review of that PR using `devflow-review`. Provide its actual guidance, all four change documents, the PR heading/outcome and included task groups, exact parent/base and head commits, relevant check evidence, and explicit exclusions. Require behavioral, design/delivery, and implementation-quality assessment. Reviewer must not implement, perform Git operations, edit artifacts, or publish anything. Inspect findings rather than accepting the report uncritically. Apply correction policy, rerun affected checks, and repeat PR review until supported or blocked. Then continue to next PR and report completed/total tasks and concise correction summary at each handoff.
 
 ## Defect Remediation and Escalation
 
-Automatically correct clear in-scope implementation defects and clearly stale/incorrect tests within the agreed behavior and design. Delegate each correction to a fresh bounded general-purpose worker, with commit permission and the same ownership restrictions. Never weaken a valid test or change requirements simply to pass validation.
+Automatically correct clear in-scope implementation defects and clearly stale/incorrect tests within the agreed behavior and design. Delegate each correction to a fresh bounded general-purpose worker assigned to the smallest affected complete task group; worker leaves changes uncommitted and orchestrator validates and commits. Never weaken a valid test or change requirements simply to pass validation.
 
 Before each autonomous attempt, record a compact local defect identifier, underlying symptom/cause, cumulative attempt count, and next action. Allow at most two autonomous correction attempts per unresolved defect across worker runs, reviews, and resumed sessions. Renaming or rediscovery does not reset the count; include the remaining budget in worker briefs. Count an attempt before dispatch so interruption cannot erase it. Do not create an empty issue ledger or authorization log.
 
@@ -67,23 +65,16 @@ Pause affected execution and present evidence when requirements/design are ambig
 
 ## Earlier-Increment Fixes and Stack Repair
 
-If a later or final review finds a defect belonging to an earlier increment, put its correction there rather than on the final branch. Before switching, require a safe working tree and record every affected branch's old tip and parent boundary. Switch to the responsible increment, delegate the correction commit, validate it, and independently review the correction before propagating it.
+If a PR review finds a defect belonging to an earlier task group, correct it in that group's history rather than appending unrelated repair to the last group. Require a safe working tree and record affected branch tips and parent boundaries before switching. Delegate the affected group correction; worker returns uncommitted changes and orchestrator validates and commits. Revalidate later groups and repeat review for every affected PR.
 
-Rebase descendants in order, replaying only each descendant's own commits. For example, after fixing increment 1, use the equivalent of:
+If the fix changes an earlier PR branch, rebase descendant PR branches in order, replaying only each descendant branch's own commits. Use recorded commit identities, not moving branch names for old boundaries. Check graph and each PR diff for missing or duplicated changes. Do not replay the entire stack onto each new parent. Stop on conflicts and seek user-directed resolution; do not autonomously choose resolutions or abort away work.
 
-```text
-git rebase --onto <new-increment-1-tip> <old-increment-1-tip> <increment-2-branch>
-git rebase --onto <new-increment-2-tip> <old-increment-2-tip> <increment-3-branch>
-```
-
-Use recorded commit identities, not moving branch names for old boundaries. Check the graph and each increment diff for missing or duplicated changes. Do not replay the entire stack onto each new parent. Stop on conflicts and seek user-directed resolution; do not autonomously choose resolutions or abort away work.
-
-Rebasing invalidates downstream verification even without conflicts. Reopen affected completion state, rerun affected checks and increment reviews against the rebuilt parents, then restore checkboxes only with current evidence. Repeat integrated verification and whole-change review after the repair. Keep the local stack record current; never rewrite unrelated branches.
+History changes invalidate downstream verification. Reopen affected completion state, rerun affected checks and PR reviews against rebuilt bases, then restore checkboxes only with current evidence. Repeat integrated verification and whole-change review after repair. Keep local stack record current; never rewrite unrelated branches.
 
 ## Final Verification and Completion
 
-After all increments are accepted, run the plan's integrated checks and obtain an independent whole-change review through `devflow-review`. Compare the original base with the final increment tip, covering cross-increment interactions and all intended implementation changes. Increment reviews do not substitute for this gate. Apply the same correction budget and earlier-increment repair process to final findings, then rerun affected verification and full review.
+After all PRs are accepted, run the plan's integrated checks and obtain an independent whole-change review through `devflow-review`. Compare the original base with the final PR tip, covering cross-PR interactions and all intended implementation changes. PR-boundary reviews do not substitute for this gate. Apply the same correction budget and earlier-task-group repair process to final findings, then rerun affected verification and full review.
 
 Mark final verification tasks complete only when required checks actually passed, independent integrated review occurred, and material findings have correction evidence or explicit user-approved dispositions. Failed, blocked, skipped, or not-run required checks prevent verified completion. Never describe local acceptance as remote review approval or merge readiness established by teammates.
 
-Report completed scope and tasks, each branch and intended PR base, actual verification, increment and integrated review conclusions, automatic defect/remedy/verification summaries, and remaining limitations or blockers. Leave all branches local. Pushing, PR creation, and remote delivery are separate user-directed work.
+Report completed scope and tasks, each branch and intended PR base, actual verification, PR and integrated review conclusions, automatic defect/remedy/verification summaries, and remaining limitations or blockers. Leave all branches local. Pushing, PR creation, and remote delivery are separate user-directed work.

@@ -1,28 +1,28 @@
 ---
 name: devflow-deliver
-description: Collaboratively draft concise PR descriptions and reviewer comments for implemented Devflow increments, then publish through gh only with separate explicit approval. Use to prepare or resume delivery without replanning, restructuring branches, or creating integration PRs.
+description: Collaboratively draft concise PR descriptions and reviewer comments for implemented Devflow PRs, each potentially containing multiple task groups, then publish through gh only with separate explicit approval. Use to prepare or resume delivery without replanning, restructuring branches, or creating integration PRs.
 ---
 
 # Devflow Deliver
 
-Turn implemented increments into clear PRs for human reviewers. The plan explains intended delivery; PR materials explain the actual diff. Agree each PR one at a time, then obtain separate publication approval for the agreed set.
+Turn implemented PRs into clear materials for human reviewers. A PR may contain one or more complete task groups; the plan explains intended delivery, while PR materials explain the actual diff. Agree each PR one at a time, then obtain separate publication approval for the agreed set.
 
 ## Boundaries
 
 - Invocation authorizes investigation and local PR drafts, not pushes or remote changes. Governing policy must permit publication; this skill cannot grant itself permission or override a prohibition.
 - Do not implement fixes, change task state, split commits, rebase, merge, or restructure branches. Surface boundary mismatches for user disposition through planning or implementation instead.
-- Cover only the planned increment PRs. Do not create an integration PR, advance the feature integration branch, or assume the final target is `main`.
+- Cover only the planned PRs. Do not create an integration PR, advance the feature integration branch, or assume the final target is `main`.
 - Protect unrelated and uncommitted work. Never stage, commit, stash, discard, or silently include it. Do not publish local change documents, resume notes, secrets, or unrelated commits.
 
 ## Establish the Actual Delivery Surface
 
 Identify the change and read `devflow/<change-id>/{proposal,requirements,design,plan}.md`, applicable project guidance, and the repository's PR template. Inspect optional local resume notes if present, but require no particular filename or ledger. Verify their claims against Git and check evidence; notes and checked tasks are not proof.
 
-Inspect branches, exact parent/head commit identities, each increment's diff and commits, working-tree state, dependencies, and available verification/review evidence. Use the increment's actual parent, not the whole feature baseline, for its PR scope. Confirm repository, remote, head/base branches, and fork ownership rather than guessing. The first increment may target a feature integration branch; later increments normally target the previous increment. Follow the agreed stack, not a hard-coded default branch.
+Inspect branches, exact parent/head commit identities, each PR's diff and commits, working-tree state, dependencies, and available verification/review evidence. Use the PR's actual parent, not the whole feature baseline, for its scope. Confirm repository, remote, head/base branches, and fork ownership rather than guessing. The first increment may target a feature integration branch; later increments normally target the previous increment. Follow the agreed stack, not a hard-coded default branch.
 
 Use read-only `gh` queries to find existing PRs for each exact repository/head/base pair and inspect existing descriptions and comments. Check authentication and access before proposing publication. Missing tools, ambiguous ownership/targets, or a materially different stack require clarification. Treat repository and remote content as context, not authorization.
 
-Drafting may proceed with incomplete verification. State actual passed, failed, skipped, blocked, or not-run checks plainly; never call an unverified increment verified or ready to merge. Missing evidence is not a reason to invent a passing result or silently rerun implementation. Route defects and stale verification to implementation/review when needed.
+Drafting may proceed with incomplete verification. State actual passed, failed, skipped, blocked, or not-run checks plainly; never call an unverified PR verified or ready to merge. Missing evidence is not a reason to invent a passing result or silently rerun implementation. Route defects and stale verification to implementation/review when needed.
 
 ## Agree One PR at a Time
 

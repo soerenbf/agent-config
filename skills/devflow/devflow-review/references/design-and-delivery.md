@@ -1,6 +1,6 @@
 # Design and Delivery Alignment
 
-Review consequential technical decisions and the delivery commitments applicable to the selected scope. Use `design.md` for the agreed approach and constraints and `plan.md` for PR outcomes, dependencies, merge conditions, tasks, and verification.
+Review consequential technical decisions and the delivery commitments applicable to the selected scope. Use `design.md` for the agreed approach and constraints and `plan.md` for ordered task groups, their PR assignments, dependencies, merge conditions, and verification.
 
 ## Consequential Design Decisions
 
@@ -14,9 +14,9 @@ Distinguish:
 
 A justified implementation improvement may warrant a design update later, but review does not authorize that update. If the design itself is unsafe or contradictory, identify the design issue rather than forcing code to follow it blindly.
 
-## PR Increment Review
+## PR Review
 
-Assess the selected increment's coherent outcome, not the complete future feature:
+Assess the selected PR's coherent outcome and included task groups, not the complete future feature:
 
 - Are its declared dependencies actually present in the reviewed base or otherwise satisfied as the plan requires?
 - Are its outcome and non-obvious merge conditions supported by the code and check evidence?
@@ -25,7 +25,7 @@ Assess the selected increment's coherent outcome, not the complete future featur
 - Does it accidentally depend on work outside its parent chain or include unrelated later work with a meaningful review or integration cost?
 - Are temporary paths and deferred cleanup consistent with the plan, without exposing an unsafe intermediate state?
 
-A stacked increment need not stand alone without its declared parent. An intentional intermediate state need not implement the final feature, but must satisfy its current safety and compatibility commitments.
+A stacked PR need not stand alone without its declared parent. An intentional intermediate state need not implement the final feature, but must satisfy its current safety and compatibility commitments.
 
 ## Whole-Change Review
 
@@ -37,13 +37,13 @@ Inspect the integrated result across increments:
 - Were final integrated checks meaningfully executed, rather than inferred from successful isolated increment checks?
 - Are outstanding tasks genuinely unfinished work, stale bookkeeping, or deferrals that need an explicit decision?
 
-Earlier clean increment reviews do not prove integrated correctness or completion.
+Earlier clean PR reviews do not prove integrated correctness or completion.
 
 ## Tasks and Commit Progression
 
-Treat tasks as observable delivery commitments, not proof. Verify relevant work and evidence regardless of checkbox state. Report a materially incomplete task when it undermines the increment's outcome or a required check; do not elevate stale bookkeeping into a code defect.
+Treat task-group tasks as observable delivery commitments, not proof. Verify relevant work and evidence regardless of checkbox state. Report a materially incomplete task when it undermines the increment's outcome or a required check; do not elevate stale bookkeeping into a code defect.
 
-Commit progression is an intended story, not fixed choreography. Splitting, combining, or reordering commits is acceptable when the resulting changes remain coherent and preserve consequential sequencing constraints. Do not flag message wording or commit counts merely for differing from the sketch. Inspect actual history only as needed for a stated history/reviewability commitment or an ordering risk; a final tree alone cannot prove intermediate commits were safe.
+Each task group is intended to produce one coherent commit. Tasks within a group may share that commit, but commits should not combine separate groups. Assess this boundary only where it affects traceability or reviewability; do not flag message wording. Inspect actual history only as needed for a stated history/reviewability commitment or an ordering risk; a final tree alone cannot prove intermediate commits were safe.
 
 ## Verification and Gaps
 

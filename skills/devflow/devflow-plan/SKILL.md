@@ -1,6 +1,6 @@
 ---
 name: devflow-plan
-description: Collaboratively translate agreed change documents into a concise execution plan with reviewable PR increments, optional commit progression, and task checklists. Use to plan delivery after technical design, without implementing or performing Git writes.
+description: Collaboratively translate agreed change documents into an ordered implementation plan of commit-sized task groups composed into reviewable PRs. Use to plan delivery after technical design, without implementing or performing Git writes.
 ---
 
 # Devflow Plan
@@ -26,22 +26,22 @@ Read [the plan template](assets/plan.md) fully before drafting. Its path is rela
 ## Plan Together
 
 1. **Synthesize the starting point.** Summarize the agreed outcome, implementation seams, verification strategy, and consequential delivery constraints. Distinguish evidence from assumptions and surface meaningful gaps without restarting settled design discussions.
-2. **Propose delivery increments.** Recommend the smallest useful PR structure, explaining dependencies, risky transitions, and what makes each increment safe to merge. Default to one PR; multiple PRs must earn their coordination cost. Discuss consequential choices with the user rather than presenting a finished breakdown as settled.
-3. **Sketch progression and tasks.** Describe meaningful commit progression only where it helps explain the change over time. Populate concise, granular task checkboxes, including supporting tests and relevant verification. Resolve material ordering and feasibility questions together.
+2. **Order task groups and compose PRs.** Create concise, observable task groups in implementation order; each group is one coherent commit-sized delegation unit. Tasks within a group may be combined into that commit, but commits do not span groups. Assign one or more complete groups to each PR. Recommend the smallest useful PR structure, explaining dependencies, risky transitions, and merge safety. Default to one PR; multiple PRs must earn their coordination cost. Discuss consequential choices with the user rather than presenting a finished breakdown as settled.
+3. **Specify verification.** Include supporting tests and relevant checks in the task groups they verify. Resolve material ordering and feasibility questions together.
 4. **Confirm the substance.** Present a concise synthesis of the delivery structure, dependencies, checks, and remaining deferrable unknowns. Wait for explicit agreement before writing; the initial invocation alone does not approve newly proposed content. Revise and reconfirm when corrected.
 5. **Write, check, and stop.** Write the agreed plan using the template, replacing drafting guidance and omitting irrelevant sections. Read it back and check consistency with the agreement and prerequisite documents. Report its path and remaining uncertainty. Do not begin implementation or perform Git writes.
 
 ## Delivery Judgment
 
-PRs, commits, and tasks are different boundaries:
+Task groups, commits, and PRs have distinct roles:
 
-- **PR increments** are coherent review and integration units. Name their outcome and state dependencies and non-obvious merge conditions. Each increment includes supporting tests or relies on tests already present, never only tests promised in a later PR. Consider compatibility, deployment, migration, and rollback where relevant to intermediate states.
-- **Commit progression** explains meaningful chunks and why their sequence helps: for example, establish a seam → add a replacement → switch behavior → remove the old path. It is a proposed progression, not a second checklist or fixed sequence. Implementation may split or combine commits as the actual diff emerges while keeping changes coherent and relevant tests together. Omit the sketch when one coherent commit suffices or the sequence adds no value.
-- **Tasks** are observable work, not a copy of the design. Use short numbered checkboxes such as `1.1`; keep the task list only in the plan. Group tasks by PR increment, not mechanically by implementation versus testing. Include callers, fixtures, exports, documentation, and configuration only where the change actually affects them.
+- **Task groups** are the ordered implementation checklist and smallest worker assignment. Each group should form one coherent commit-sized change; its tasks are observable work, not a copy of the design. Number groups and tasks (for example, `1`, `1.1`, `1.2`), and keep this single checklist in the plan. Include callers, fixtures, exports, documentation, configuration, and tests only where affected.
+- **Commits** are created by the orchestrator, one per completed task group. Workers return uncommitted changes. A commit may cover multiple tasks within its assigned group, but must not combine groups.
+- **PRs** are coherent review and integration units containing one or more complete task groups. Name each PR outcome and state dependencies and non-obvious merge conditions. Each PR includes supporting tests or relies on tests already present, never only tests promised in a later PR. Consider compatibility, deployment, migration, and rollback where relevant to intermediate states.
 
 Order work by dependencies and risk, not a blanket implementation-then-tests sequence. Carry the design's verification strategy into actionable checks: specify actual commands, essential prerequisites, and expected outcomes where practical. Prefer regression proof for bug fixes. Put checks alongside the work they verify; reserve final verification for integrated behavior and review against requirements. Never describe planned or blocked checks as passed.
 
-Keep the output proportional. A small change needs one PR and a flat task checklist, not artificial phases or detailed commit choreography. Do not repeat requirements or architectural rationale already captured elsewhere; link to their IDs or sections when useful. Record only deferrable unknowns that cannot change the delivery structure or undermine its safety. Material uncertainty needs discussion before writing.
+Keep the output proportional. A small change needs one PR and one or a few meaningful task groups, not artificial phases or detailed commit choreography. Do not repeat requirements or architectural rationale already captured elsewhere; link to their IDs or sections when useful. Record only deferrable unknowns that cannot change the delivery structure or undermine its safety. Material uncertainty needs discussion before writing.
 
 ## Resume and Revise
 
