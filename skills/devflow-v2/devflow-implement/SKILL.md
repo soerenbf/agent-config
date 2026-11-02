@@ -15,7 +15,7 @@ Read `devflow/<change-id>/{proposal,requirements,design,plan}.md`, applicable pr
 
 Inspect branch/HEAD, status, committed, staged, unstaged, and relevant untracked work. Protect unrelated work and pre-existing history. Do not overwrite, stash, stage, commit, or discard user changes. Pause if existing work overlaps the assignment or prevents safe branch switching. On resume, reconcile documents and checkboxes with actual commits and current check evidence; checked tasks are not proof of completion.
 
-Require `Agent` with general-purpose workers and an independent reviewer. Discover and read the v2 `devflow-review` skill and its required companions/references through the environment's skill registry. Check its contents, not only its name: the older skill has the same name. Do not assume sibling installation paths or silently substitute v1 review. Missing tools or companions require an agreed alternative before execution.
+Require `Agent` with general-purpose workers and an independent reviewer. Discover and read the v2 `devflow-review` skill and its required companions/references through the environment's skill registry. Check its contents and select v2 `devflow-review`, not `devflow-review-v1`. Do not assume sibling installation paths or silently substitute v1 review. Missing tools or companions require an agreed alternative before execution.
 
 Before editing, report the selected change, original base commit, planned branch stack, pending tasks, checks, and protected work. Resolve consequential branch/base ambiguity with the user, not by guessing.
 

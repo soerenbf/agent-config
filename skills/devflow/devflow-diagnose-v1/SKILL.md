@@ -1,5 +1,5 @@
 ---
-name: devflow-diagnose
+name: devflow-diagnose-v1
 description: Investigate bugs or performance regressions with safe reproduction and evidence-ranked hypotheses. Use to diagnose an uncertain cause before proposal capture, without automatically editing or fixing.
 ---
 
@@ -32,4 +32,4 @@ Temporary instrumentation or any other edit requires explicit user permission fi
 
 Summarize observations, reproduction (or its limitation), ranked causes and confidence, probe results, and unresolved questions in conversation. Define future verification against the original full symptom as well as a focused regression scenario; recommend red/green evidence where practical without writing tests now.
 
-When the user considers diagnosis sufficient, suggest explicit invocation of the separately installed `devflow-propose` companion to capture findings and a bounded repair plan. Do not create records or implement merely because the cause is known. If the companion is missing, report it and ask how to proceed, rather than accessing sibling resources or improvising artifacts. No OpenSpec runtime or bundled resources are required.
+When the user considers diagnosis sufficient, suggest explicit invocation of the separately installed `devflow-propose-v1` companion to capture findings and a bounded repair plan. Do not create records or implement merely because the cause is known. If the companion is missing, report it and ask how to proceed, rather than accessing sibling resources or improvising artifacts. No OpenSpec runtime or bundled resources are required.
