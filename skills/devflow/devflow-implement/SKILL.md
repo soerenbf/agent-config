@@ -1,6 +1,6 @@
 ---
 name: devflow-implement
-description: Implement an approved Devflow change through sequential PR-sized workers, stacked local branches, independent reviews, and bounded automatic corrections. Use to implement or resume a v2 Devflow plan without pushing or opening PRs.
+description: Implement an approved Devflow change through sequential PR-sized workers, stacked local branches, independent reviews, and bounded automatic corrections. Use to implement or resume a Devflow plan without pushing or opening PRs.
 ---
 
 # Devflow Implement
@@ -15,7 +15,7 @@ Read `devflow/<change-id>/{proposal,requirements,design,plan}.md`, applicable pr
 
 Inspect branch/HEAD, status, committed, staged, unstaged, and relevant untracked work. Protect unrelated work and pre-existing history. Do not overwrite, stash, stage, commit, or discard user changes. Pause if existing work overlaps the assignment or prevents safe branch switching. On resume, reconcile documents and checkboxes with actual commits and current check evidence; checked tasks are not proof of completion.
 
-Require `Agent` with general-purpose workers and an independent reviewer. Discover and read the v2 `devflow-review` skill and its required companions/references through the environment's skill registry. Check its contents and select v2 `devflow-review`, not `devflow-review-v1`. Do not assume sibling installation paths or silently substitute v1 review. Missing tools or companions require an agreed alternative before execution.
+Require `Agent` with general-purpose workers and an independent reviewer. Discover and read the `devflow-review` skill and its required companions/references through the environment's skill registry. Do not assume sibling installation paths or silently substitute another review skill. Missing tools or companions require an agreed alternative before execution.
 
 Before editing, report the selected change, original base commit, planned branch stack, pending tasks, checks, and protected work. Resolve consequential branch/base ambiguity with the user, not by guessing.
 
@@ -51,7 +51,7 @@ Give each worker a self-contained brief containing:
 
 After the worker returns, inspect actual commits, files, diffs, branch identity, and working-tree state against the assignment and protected baseline. Reject unsupported completion claims, unexpected changes, missing commits, or failed/missing required checks. Run applicable checks yourself; zero relevant tests or skipped prerequisites do not establish success. Never discard unexpected work to restore the expected state.
 
-Obtain an independent general-purpose reviewer for the increment using v2 `devflow-review`. Provide its actual guidance, all four change documents, the increment's heading/outcome, exact parent/start and head commits, relevant check evidence, and explicit exclusions. Include intended uncommitted/untracked implementation if any remains; do not hide it behind a commit-only diff. Require behavioral, design/delivery, and implementation-quality assessment. The reviewer must not implement, commit, edit artifacts, or publish anything. Inspect the findings rather than accepting the report uncritically.
+Obtain an independent general-purpose reviewer for the increment using `devflow-review`. Provide its actual guidance, all four change documents, the increment's heading/outcome, exact parent/start and head commits, relevant check evidence, and explicit exclusions. Include intended uncommitted/untracked implementation if any remains; do not hide it behind a commit-only diff. Require behavioral, design/delivery, and implementation-quality assessment. The reviewer must not implement, commit, edit artifacts, or publish anything. Inspect the findings rather than accepting the report uncritically.
 
 Apply the correction policy below, rerun affected checks, and re-review corrections until the increment is supported or blocked. Only then mark its satisfied tasks complete in local `plan.md` and record the accepted tip. Leave blocked or unverified tasks unchecked with a short reason. Continue automatically to the next increment; report completed/total tasks and a concise correction summary at each handoff.
 
@@ -82,7 +82,7 @@ Rebasing invalidates downstream verification even without conflicts. Reopen affe
 
 ## Final Verification and Completion
 
-After all increments are accepted, run the plan's integrated checks and obtain an independent whole-change review through v2 `devflow-review`. Compare the original base with the final increment tip, covering cross-increment interactions and all intended implementation changes. Increment reviews do not substitute for this gate. Apply the same correction budget and earlier-increment repair process to final findings, then rerun affected verification and full review.
+After all increments are accepted, run the plan's integrated checks and obtain an independent whole-change review through `devflow-review`. Compare the original base with the final increment tip, covering cross-increment interactions and all intended implementation changes. Increment reviews do not substitute for this gate. Apply the same correction budget and earlier-increment repair process to final findings, then rerun affected verification and full review.
 
 Mark final verification tasks complete only when required checks actually passed, independent integrated review occurred, and material findings have correction evidence or explicit user-approved dispositions. Failed, blocked, skipped, or not-run required checks prevent verified completion. Never describe local acceptance as remote review approval or merge readiness established by teammates.
 
