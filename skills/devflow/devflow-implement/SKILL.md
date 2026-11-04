@@ -17,11 +17,13 @@ Inspect branch/HEAD, status, committed, staged, unstaged, and relevant untracked
 
 Require `Agent` with general-purpose workers and an independent reviewer. Discover and read the `devflow-review` skill and its required companions/references through the environment's skill registry. Do not assume sibling installation paths or silently substitute another review skill. Missing tools or companions require an agreed alternative before execution.
 
-Before editing, report the selected change, original base commit, planned branch stack, pending tasks, checks, and protected work. Resolve consequential branch/base ambiguity with the user, not by guessing.
+Before editing, report the selected change, original base commit, planned branch stack, pending tasks, checks, approved model selections, and protected work. Resolve consequential branch/base ambiguity with the user, not by guessing.
 
 ## Local Artifacts and Branch Stack
 
 Devflow artifacts stay local and untracked by default. Resolve the repository's local exclude file with `git rev-parse --git-path info/exclude`; preserve its existing contents and add a root-anchored `/devflow/` rule if needed. Do not change shared `.gitignore`. If artifacts are already tracked, report that and ask before changing their tracking. Never force-add artifacts. The coordinator alone updates `plan.md` task checkboxes; workers must not edit change artifacts. Keep necessary resume notes concise and local in the same change directory, not in a new mandatory progress ledger.
+
+Record any evidence captured during implementation, including benchmark results, under `devflow/<change-slug>/evidence/`, creating the directory when needed. Include the commands, relevant environment/setup, commit identity, and actual results needed to interpret or reproduce it. Workers return captured evidence to the coordinator, who saves it locally; workers must not edit change artifacts. Preserve existing evidence and keep it out of implementation commits.
 
 The orchestrator alone creates and manages planned PR branches. For multiple PRs, create `feature/<feature-name>` at the agreed original base, then build this stack:
 
@@ -37,6 +39,14 @@ Create each PR branch from the accepted previous PR tip. For one PR, create only
 
 Implementation invocation permits rebasing branches created for this execution, including on resume when ownership is established. It does not permit rewriting pre-existing user history. If branches have been published or ownership/publication status is uncertain, ask before rewriting; never infer force-push permission.
 
+## Model Selection
+
+Use the exact model and thinking level approved in `plan.md` for every delegation, passing them explicitly as `Agent`'s `model` and `thinking` arguments. Task-group workers and defect corrections, including earlier-group repairs, use the affected group's implementation selection. PR reviews and repeated reviews use that PR's review selection; final whole-change reviews use the whole-change review selection.
+
+If an existing plan lacks selections, recommend and obtain user approval before dispatch, then record them in `plan.md`. Recommend `openai-codex/gpt-6.1-terra` with `medium` thinking for ordinary implementation and `openai-codex/gpt-6.1-sol` with `high` thinking for complex groups involving difficult reasoning, such as concurrency, security-sensitive behavior, or cross-cutting invariants; file count alone does not imply complexity. Recommend `openai-codex/gpt-6.1-sol` with `high` thinking for reviews, or `xhigh` for PRs containing complex groups and whole-change review when complex work is included. User-approved choices take precedence over recommendations.
+
+If unexpected complexity warrants a different selection, explain the recommendation and obtain approval before updating the plan or switching. If a selected model or thinking level is unavailable, pause for an agreed alternative; never silently substitute.
+
 ## Task Group Implementation Loop
 
 Process PRs in dependency order and task groups in their planned order. Delegate exactly one complete task group per worker, using `Agent`, `subagent_type: "general-purpose"`, in the target checkout. One worker writes at a time; wait for its return and acceptance before dispatching the next. Workers return uncommitted changes. The orchestrator alone performs Git operations: inspect, verify, stage specific owned files, create one coherent commit per group, and switch/create branches. Never combine groups into one commit. Do not use isolated worktrees that alter the agreed branch/commit structure.
@@ -47,7 +57,7 @@ Give each worker a self-contained brief containing:
 - Assigned checkout and branch, expected starting HEAD, bounded writable paths, protected work, and applicable project guidance.
 - Explicit instruction to leave changes uncommitted and not perform Git operations, edit change artifacts, mutate remote state, or expand scope.
 - Required checks, prerequisites, expected outcomes, and regression proof where practical. Stop on contradictory requirements, missing prerequisites, or consequential ambiguity.
-- Required report: task IDs addressed, changed files, actual commands and passed/failed/skipped/blocked/not-run results, tests executed, deviations, and blockers. Corrections state defect, remedy, and verification.
+- Required report: task IDs addressed, changed files, actual commands and passed/failed/skipped/blocked/not-run results, tests executed, captured evidence for the coordinator to save under `devflow/<change-slug>/evidence/`, deviations, and blockers. Corrections state defect, remedy, and verification.
 
 After each worker returns, inspect its summary, changed files, diff, and working-tree state against the assignment and protected baseline. Verify reported checks; run applicable checks yourself. Reject unsupported completion claims, unexpected changes, or failed/missing required checks. Only after verifying the group's completion, create its commit and mark its satisfied tasks complete in local `plan.md`. Leave blocked or unverified tasks unchecked with a short reason. Never discard unexpected work to restore the expected state.
 

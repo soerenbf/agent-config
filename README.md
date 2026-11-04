@@ -28,7 +28,7 @@ Devflow skills are grouped under [`skills/devflow/`](skills/devflow/). Each has 
 
 Delivery handles each planned increment one at a time. Agree all titles, descriptions, and useful reviewer comments before authorizing publication of the set. Drafts can state incomplete checks; they must not claim verified completion. Existing PRs are reused and comments are not duplicated. Integration PRs and branch restructuring are out of scope.
 
-Publication requires governing policy that explicitly permits approved branch pushes, draft PR creation, and agreed PR edits/comments through `gh`. Skill invocation or approval of wording alone does not authorize remote changes. Implementation remains local-only. Devflow artifacts and draft materials stay local under `devflow/<change-id>/`; the delivery skill does not require a `resume.md` or another ledger.
+Publication requires governing policy that explicitly permits approved branch pushes, draft PR creation, and agreed PR edits/comments through `gh`. Skill invocation or approval of wording alone does not authorize remote changes. Implementation remains local-only. Devflow artifacts stay local under `devflow/<change-slug>/`, with PR drafts in its `delivery/` directory; the delivery skill does not require a `resume.md` or another ledger.
 
 ## Install
 

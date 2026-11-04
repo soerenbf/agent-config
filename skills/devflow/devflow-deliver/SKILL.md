@@ -16,7 +16,7 @@ Turn implemented PRs into clear materials for human reviewers. A PR may contain 
 
 ## Establish the Actual Delivery Surface
 
-Identify the change and read `devflow/<change-id>/{proposal,requirements,design,plan}.md`, applicable project guidance, and the repository's PR template. Inspect optional local resume notes if present, but require no particular filename or ledger. Verify their claims against Git and check evidence; notes and checked tasks are not proof.
+Identify the change and read `devflow/<change-slug>/{proposal,requirements,design,plan}.md`, applicable project guidance, and the repository's PR template. Inspect optional local resume notes if present, but require no particular filename or ledger. Verify their claims against Git and check evidence; notes and checked tasks are not proof.
 
 Inspect branches, exact parent/head commit identities, each PR's diff and commits, working-tree state, dependencies, and available verification/review evidence. Use the PR's actual parent, not the whole feature baseline, for its scope. Confirm repository, remote, head/base branches, and fork ownership rather than guessing. The first increment may target a feature integration branch; later increments normally target the previous increment. Follow the agreed stack, not a hard-coded default branch.
 
@@ -31,7 +31,7 @@ Work in dependency order. For each increment:
 1. Propose the title, intended repository/head/base, short description, and any reviewer-guidance comments together.
 2. Explain only consequential scope differences or missing evidence. Discuss and revise the materials with the user.
 3. Wait for explicit agreement before moving to the next PR. If there are no useful comments, say so; do not manufacture them.
-4. Save agreed materials under `devflow/<change-id>/` in simple local Markdown files. Preserve unrelated drafts. Keep exact commit tips and proposed comment locations beside the drafts only as needed for safe publication/resume, not in a new mandatory progress ledger.
+4. Save agreed PR titles, descriptions, and reviewer-guidance comments in simple local Markdown files under `devflow/<change-slug>/delivery/`, creating the directory if needed. Preserve unrelated drafts. Keep exact commit tips and proposed comment locations beside the drafts only as needed for safe publication/resume, not in a new mandatory progress ledger.
 
 ### Description Style
 
@@ -85,4 +85,4 @@ Treat failures as potentially partial. Read back remote state before retrying; a
 
 Read back PR titles, bodies, heads/bases, draft state for newly created PRs, and posted comments/anchors. Report PR URLs, actual publication results, missing verification, and remaining blockers. Publication is not teammate approval, successful CI, or permission to merge. Do not mark PRs ready, request reviewers, merge, or perform other remote actions outside the approved publication scope.
 
-On resume, reconcile local drafts with current commits and remote PRs/comments, avoid duplicate publication, and obtain fresh publication approval for remaining actions. No mandatory approval log or second task checklist is needed.
+On resume, read drafts from `devflow/<change-slug>/delivery/` and reconcile them with current commits and remote PRs/comments, avoid duplicate publication, and obtain fresh publication approval for remaining actions. No mandatory approval log or second task checklist is needed.
