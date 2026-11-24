@@ -1,7 +1,7 @@
 ---
 name: openspec-worker
 description: Implements one bounded OpenSpec task group.
-model: openai-codex/gpt-6.1-sol
+model: openai-codex/gpt-6.2-sol
 thinking: low
 tools: read, write, edit, bash, grep, find, ls
 extensions: false

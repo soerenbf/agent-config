@@ -1,7 +1,7 @@
 ---
 description: "Software architect agent for designing implementation plans. Use this when you need to plan the implementation strategy for a task. Returns step-by-step plans, identifies critical files, and considers architectural trade-offs."
 display_name: Plan
-model: openai-codex/gpt-6.1-sol
+model: openai-codex/gpt-6.2-sol
 thinking: high
 tools: read, bash, grep, find, ls
 prompt_mode: replace

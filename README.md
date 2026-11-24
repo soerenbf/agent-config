@@ -11,6 +11,7 @@ Personal configuration for coding agents. The repository currently contains reus
 | [`resolve-merge-conflicts`](skills/resolve-merge-conflicts/SKILL.md) | Resolve Git conflicts semantically, with a helper for inspecting conflict context. |
 | [`openspec-coordinator`](skills/openspec-coordinator/SKILL.md) | Coordinate a ready OpenSpec change through sequential delegated implementation and reviews. |
 | [`review`](skills/review/SKILL.md) | Review code changes for correctness, security, performance, maintainability, style, and testing. |
+| [`review-walkthrough`](skills/review-walkthrough/SKILL.md) | Understand how a change fits into an application through visual, interactive human review. |
 | [`tdd`](skills/tdd/SKILL.md) | Plan behavioral tests, establish a complete red suite, and wait for confirmation before implementation. |
 
 ### Devflow
